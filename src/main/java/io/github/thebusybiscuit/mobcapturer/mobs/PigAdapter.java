@@ -18,7 +18,7 @@ public class PigAdapter extends AnimalsAdapter<Pig> {
 		List<String> lore = super.getLore(json);
 		
 		if (json.get("saddle").getAsBoolean()) {
-			lore.add(ChatColor.GRAY + "+ Saddle");
+			lore.add(ChatColor.GRAY + "+ 鞍");
 		}
 		
 		return lore;

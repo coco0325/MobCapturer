@@ -21,11 +21,11 @@ public class WolfAdapter extends AbstractTameableAdapter<Wolf> {
 		List<String> lore = super.getLore(json);
 		
 		if (!json.get("ownerUUID").isJsonNull()) {
-			lore.add(ChatColor.GRAY + "Collar Color: " + ChatColor.WHITE + StringUtils.format(json.get("collarColor").getAsString()));
-			lore.add(ChatColor.GRAY + "Sitting: " + ChatColor.WHITE + json.get("sitting").getAsBoolean());
+			lore.add(ChatColor.GRAY + "項圈顏色: " + ChatColor.WHITE + StringUtils.format(json.get("collarColor").getAsString()));
+			lore.add(ChatColor.GRAY + "坐下狀態: " + ChatColor.WHITE + json.get("sitting").getAsBoolean());
 		}
 		else {
-			lore.add(ChatColor.GRAY + "Angry: " + ChatColor.WHITE + json.get("angry").getAsBoolean());
+			lore.add(ChatColor.GRAY + "生氣狀態: " + ChatColor.WHITE + json.get("angry").getAsBoolean());
 		}
 		
 		return lore;
