@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import me.mrCookieSlime.Slimefun.Objects.handlers.ItemInteractionHandler;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,19 +21,19 @@ import com.google.gson.JsonObject;
 
 import io.github.thebusybiscuit.mobcapturer.InventoryAdapter;
 import io.github.thebusybiscuit.mobcapturer.MobAdapter;
+import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
+import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SimpleSlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.NotPlaceable;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
-public class MobEgg<T extends LivingEntity> extends SimpleSlimefunItem<ItemInteractionHandler> implements NotPlaceable {
+public class MobEgg<T extends LivingEntity> extends SimpleSlimefunItem<ItemUseHandler> implements NotPlaceable {
 
     private final NamespacedKey dataKey;
     private final NamespacedKey inventoryKey;
     private final MobAdapter<T> adapter;
-    private final SlimefunItemStack Item;
 
     public MobEgg(Category category, SlimefunItemStack item, NamespacedKey dataKey, NamespacedKey inventoryKey, MobAdapter<T> adapter, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -42,14 +41,13 @@ public class MobEgg<T extends LivingEntity> extends SimpleSlimefunItem<ItemInter
         this.dataKey = dataKey;
         this.inventoryKey = inventoryKey;
         this.adapter = adapter;
-        this.Item = item;
     }
 
     @SuppressWarnings("unchecked")
     public ItemStack getEggItem(T entity) {
         JsonObject json = adapter.saveData(entity);
 
-        ItemStack item = this.Item.clone();
+        ItemStack item = this.item.clone();
         ItemMeta meta = item.getItemMeta();
 
         meta.setLore(adapter.getLore(json));
@@ -72,48 +70,45 @@ public class MobEgg<T extends LivingEntity> extends SimpleSlimefunItem<ItemInter
 
     @SuppressWarnings("unchecked")
     @Override
-    public ItemInteractionHandler getItemHandler() {
-        return (e, p, item) -> {
-            if (isItem(item)) {
-                e.setCancelled(true);
+    public ItemUseHandler getItemHandler() {
+        return e -> {
+            e.cancel();
 
-                Block b = e.getClickedBlock();
+            Optional<Block> block = e.getClickedBlock();
 
-                if (b != null) {
-                    T entity = b.getWorld().spawn(b.getRelative(e.getParentEvent().getBlockFace()).getLocation(), adapter.getEntityClass());
+            if (block.isPresent()) {
+                Block b = block.get();
+                T entity = b.getWorld().spawn(b.getRelative(e.getClickedFace()).getLocation(), adapter.getEntityClass());
 
-                    PersistentDataContainer container = e.getItem().getItemMeta().getPersistentDataContainer();
-                    JsonObject json = container.get(dataKey, adapter);
-                    ItemUtils.consumeItem(e.getItem(), false);
+                PersistentDataContainer container = e.getItem().getItemMeta().getPersistentDataContainer();
+                JsonObject json = container.get(dataKey, adapter);
+                ItemUtils.consumeItem(e.getItem(), false);
 
-                    if (json != null) {
-                        adapter.apply(entity, json);
+                if (json != null) {
+                    adapter.apply(entity, json);
 
-                        if (adapter instanceof InventoryAdapter) {
-                            Map<String, ItemStack> inventory = new HashMap<>();
+                    if (adapter instanceof InventoryAdapter) {
+                        Map<String, ItemStack> inventory = new HashMap<>();
 
-                            try (Reader reader = new StringReader(container.get(inventoryKey, PersistentDataType.STRING))) {
-                                FileConfiguration yaml = YamlConfiguration.loadConfiguration(reader);
+                        try (Reader reader = new StringReader(container.get(inventoryKey, PersistentDataType.STRING))) {
+                            FileConfiguration yaml = YamlConfiguration.loadConfiguration(reader);
 
-                                for (String key : yaml.getKeys(true)) {
-                                    Object obj = yaml.get(key);
+                            for (String key : yaml.getKeys(true)) {
+                                Object obj = yaml.get(key);
 
-                                    if (obj instanceof ItemStack) {
-                                        inventory.put(key, (ItemStack) obj);
-                                    }
+                                if (obj instanceof ItemStack) {
+                                    inventory.put(key, (ItemStack) obj);
                                 }
                             }
-                            catch (IOException x) {
-                                x.printStackTrace();
-                            }
-
-                            ((InventoryAdapter<T>) adapter).applyInventory(entity, inventory);
                         }
+                        catch (IOException x) {
+                            x.printStackTrace();
+                        }
+
+                        ((InventoryAdapter<T>) adapter).applyInventory(entity, inventory);
                     }
                 }
-                return true;
             }
-            return false;
         };
     }
 

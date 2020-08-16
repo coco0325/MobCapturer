@@ -1,95 +1,29 @@
 package io.github.thebusybiscuit.mobcapturer;
 
+import io.github.thebusybiscuit.mobcapturer.items.MobCannon;
+import io.github.thebusybiscuit.mobcapturer.items.MobEgg;
+import io.github.thebusybiscuit.mobcapturer.items.MobPellet;
+import io.github.thebusybiscuit.mobcapturer.mobs.*;
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.core.researching.Research;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import me.mrCookieSlime.Slimefun.Lists.RecipeType;
+import me.mrCookieSlime.Slimefun.Objects.Category;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Bat;
-import org.bukkit.entity.Blaze;
-import org.bukkit.entity.CaveSpider;
-import org.bukkit.entity.Chicken;
-import org.bukkit.entity.Cod;
-import org.bukkit.entity.Cow;
-import org.bukkit.entity.Dolphin;
-import org.bukkit.entity.Donkey;
-import org.bukkit.entity.Drowned;
-import org.bukkit.entity.ElderGuardian;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Evoker;
-import org.bukkit.entity.Ghast;
-import org.bukkit.entity.Guardian;
-import org.bukkit.entity.Husk;
-import org.bukkit.entity.Illusioner;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Llama;
-import org.bukkit.entity.MagmaCube;
-import org.bukkit.entity.Mule;
-import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Pillager;
-import org.bukkit.entity.PolarBear;
-import org.bukkit.entity.Ravager;
-import org.bukkit.entity.Salmon;
-import org.bukkit.entity.Silverfish;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.SkeletonHorse;
-import org.bukkit.entity.Slime;
-import org.bukkit.entity.Spider;
-import org.bukkit.entity.Squid;
-import org.bukkit.entity.Stray;
-import org.bukkit.entity.TraderLlama;
-import org.bukkit.entity.Turtle;
-import org.bukkit.entity.Vindicator;
-import org.bukkit.entity.Witch;
-import org.bukkit.entity.WitherSkeleton;
-import org.bukkit.entity.Zombie;
-import org.bukkit.entity.ZombieHorse;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import io.github.thebusybiscuit.mobcapturer.items.MobCannon;
-import io.github.thebusybiscuit.mobcapturer.items.MobEgg;
-import io.github.thebusybiscuit.mobcapturer.items.MobPellet;
-import io.github.thebusybiscuit.mobcapturer.mobs.AnimalsAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.CatAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.ChestedHorseAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.CreeperAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.EndermiteAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.HorseAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.IronGolemAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.LlamaAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.MagicIllagerAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.MooshroomAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.PandaAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.ParrotAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.PhantomAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.PigAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.PufferFishAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.RabbitAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.RaiderAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.SheepAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.ShulkerAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.SkeletonAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.SlimeAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.SnowmanAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.StandardMobAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.TropicalFishAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.UndeadHorseAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.VexAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.WolfAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.ZombieAdapter;
-import io.github.thebusybiscuit.mobcapturer.mobs.ZombieVillagerAdapter;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.Research;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
-
-public class MobCapturer extends JavaPlugin {
+public class MobCapturer extends JavaPlugin implements SlimefunAddon {
 
     private final NamespacedKey dataKey = new NamespacedKey(this, "captured_mob");
     private final NamespacedKey inventoryKey = new NamespacedKey(this, "mob_inventory");
@@ -104,8 +38,8 @@ public class MobCapturer extends JavaPlugin {
     public void onEnable() {
 
         new PelletListener(this);
-        category = new Category(new CustomItem(SkullItem.fromHash("d429ff1d2015cb11398471bb2f895f7b4c3ccec201e4ad7a86ff24b744878c"), "&d生物捕捉"));
-        research = new Research(32652, "生物捕捉", 45);
+        category = new Category(new NamespacedKey(this, "mob_capturer"), new CustomItem(SkullItem.fromHash("d429ff1d2015cb11398471bb2f895f7b4c3ccec201e4ad7a86ff24b744878c"), "&d生物捕捉"));
+        research = new Research(new NamespacedKey(this, "mob_capturing"), 32652, "生物捕捉", 45);
 
         SlimefunItemStack cannon = new SlimefunItemStack("MOB_CANNON", Material.BLAZE_ROD, "&6生物捕捉槍", "", "&e右鍵發射 &b捕捉膠囊", "", "&7剩餘使用次數 &e25" );
         SlimefunItemStack pellet = new SlimefunItemStack("MOB_CAPTURING_PELLET", "983b30e9d135b05190eea2c3ac61e2ab55a2d81e1a58dbb26983a14082664", "&b捕捉膠囊", "&7生物捕捉槍的彈藥");
@@ -113,14 +47,14 @@ public class MobCapturer extends JavaPlugin {
         MobPellet mobPellet = new MobPellet(category, pellet, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] { SlimefunItems.COPPER_WIRE, SlimefunItems.SYNTHETIC_DIAMOND, SlimefunItems.COPPER_WIRE, SlimefunItems.MAGIC_LUMP_2, new ItemStack(Material.EGG), SlimefunItems.MAGIC_LUMP_2, SlimefunItems.COPPER_WIRE, SlimefunItems.SYNTHETIC_DIAMOND, SlimefunItems.COPPER_WIRE });
 
         research.addItems(mobPellet);
-        mobPellet.register();
+        mobPellet.register(this);
 
         MobCannon mobCannon = new MobCannon(this, category, cannon, mobPellet, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] { null, SlimefunItems.STEEL_INGOT, SlimefunItems.HOOK, SlimefunItems.STEEL_INGOT, SlimefunItems.POWER_CRYSTAL, SlimefunItems.STEEL_INGOT, SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.STEEL_INGOT, null });
 
         research.addItems(mobCannon);
-        mobCannon.register();
+        mobCannon.register(this);
 
-        recipeType = new RecipeType(new CustomItem(cannon, "&6生物捕捉槍", "&7使用 &6生物捕捉槍", "&7捕捉該生物"));
+        recipeType = new RecipeType(new NamespacedKey(this, "mob_capturing"), new CustomItem(cannon, "&6生物捕捉槍", "&7使用 &6生物捕捉槍", "&7捕捉該生物"));
 
         // Animals
         register("牛", EntityType.COW, new AnimalsAdapter<>(Cow.class), "9419f15ff54dae5d040f9b9d8eb2a8989e676710922a0ca164da613ca61e9");
@@ -208,9 +142,9 @@ public class MobCapturer extends JavaPlugin {
     public <T extends LivingEntity> void register(String name, EntityType type, MobAdapter<T> adapter, String eggTexture) {
         SlimefunItemStack itemstack = new SlimefunItemStack("MOB_EGG_" + type.toString(), eggTexture, "&a生物膠囊 &7(" + name + ")", "", "&7對方塊右鍵", "&r釋放膠囊內的生物");
 
-        MobEgg<T> egg = new MobEgg<>(category, itemstack, dataKey, inventoryKey, adapter, recipeType, new ItemStack[] { null, null, null, null, new CustomItem(SkullItem.fromHash(eggTexture), "&r" + name), null, null, null, null });
+        MobEgg<T> egg = new MobEgg<>(category, itemstack, dataKey, inventoryKey, adapter, recipeType, new ItemStack[] { null, null, null, null, new CustomItem(SkullItem.fromHash(eggTexture), ChatColor.WHITE + name), null, null, null, null });
 
-        egg.register();
+        egg.register(this);
 
         if (!egg.isDisabled()) {
             research.addItems(egg);
@@ -229,6 +163,16 @@ public class MobCapturer extends JavaPlugin {
         else {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public String getBugTrackerURL() {
+        return "https://github.com/TheBusyBiscuit/MobCapturer/issues";
+    }
+
+    @Override
+    public JavaPlugin getJavaPlugin() {
+        return this;
     }
 
 }
