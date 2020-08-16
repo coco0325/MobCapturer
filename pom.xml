@@ -27,7 +27,7 @@
   </repositories>
   
   <build>
-  	<finalName>${project.name} v${project.version}</finalName>
+  	<finalName>${project.name}</finalName>
   	<defaultGoal>clean package</defaultGoal>
   	<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
   	
@@ -49,37 +49,24 @@
   		<version>1.15.2-R0.1-SNAPSHOT</version>
   		<scope>provided</scope>
   	</dependency>
-  	<dependency>
-  		<groupId>com.github.TheBusyBiscuit</groupId>
-  		<artifactId>CS-CoreLib</artifactId>
-  		<version>6e17183656</version>
-  		<scope>provided</scope>
-  		<exclusions>
-  			<exclusion>
-  				<groupId>io.github.thebusybiscuit</groupId>
-  				<artifactId>cscorelib2</artifactId>
-  			</exclusion>
-  			<exclusion>
-  				<groupId>org.bstats</groupId>
-  				<artifactId>bstats-bukkit</artifactId>
-  			</exclusion>
-  		</exclusions>
-  	</dependency>
-  	<dependency>
-  		<groupId>com.github.TheBusyBiscuit</groupId>
-  		<artifactId>Slimefun4</artifactId>
-  		<version>b6e574fc1d</version>
-  		<scope>provided</scope>
-  		<exclusions>
-  			<exclusion>
-  				<groupId>io.github.thebusybiscuit</groupId>
-  				<artifactId>cscorelib2</artifactId>
-  			</exclusion>
-  			<exclusion>
-  				<groupId>org.bstats</groupId>
-  				<artifactId>bstats-bukkit</artifactId>
-  			</exclusion>
-  		</exclusions>
-  	</dependency>
+	  <dependency>
+		  <groupId>com.github.TheBusyBiscuit</groupId>
+		  <artifactId>CS-CoreLib</artifactId>
+		  <version>6e17183656</version>
+		  <scope>provided</scope>
+		  <exclusions>
+			  <exclusion>
+				  <groupId>io.github.thebusybiscuit</groupId>
+				  <artifactId>cscorelib2</artifactId>
+			  </exclusion>
+		  </exclusions>
+	  </dependency>
+	  <dependency>
+		  <groupId>me.mrCookieSlime</groupId>
+		  <artifactId>Slimefun4</artifactId>
+		  <version>4.1.18-tw</version>
+		  <scope>system</scope>
+		  <systemPath>D:/JAVA Projects/Slimefun4/target/Slimefun v4.1.18-tw.jar</systemPath>
+	  </dependency>
   </dependencies>
 </project>
